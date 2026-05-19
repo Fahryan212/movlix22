@@ -278,7 +278,7 @@ $genres = $pdo->query("SELECT * FROM genres")->fetchAll();
 
 
 <footer class="main-footer">
-    <p>&copy; <?= date('Y') ?> MOVLIX. All rights reserved.</p>
+    <p>&copy; <?= date('Y') ?> Movlix. All rights reserved.</p>
 </footer>
 
 <script>
