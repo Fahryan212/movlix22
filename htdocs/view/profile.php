@@ -83,7 +83,7 @@ $total_reviews = count($display_reviews);
 
 <body>
 <header>
-    <div class="logo">MOVLIX</div>
+    <div class="logo">MOVLIX 22</div>
     <div class="top-right">
         <div class="profile-menu">
             <img src="<?= htmlspecialchars($profileImage) ?>" alt="Profile" class="profile-icon"
