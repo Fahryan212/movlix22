@@ -267,7 +267,7 @@ $genres = $pdo->query("SELECT * FROM genres")->fetchAll();
         <div class="about-us-item">
             <h3>Dukungan dan Kontak</h3>
             <ul>
-                <li>Instagram: @movlix</li>
+                <li>Instagram: @movlix.review</li>
                 <li>Twitter: @movlix</li>
                 <li>Email: support@movlix.com</li>
                 <li>Website: movlix.com</li>
