@@ -41,10 +41,14 @@ $total_reviews = count($display_reviews);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .review-item {
-            background: #333;
+            background: rgba(43, 108, 64, 0.1);
+            border-left: 4px solid #2b6c40;
+            border-top: 1px solid #222;
+            border-right: 1px solid #222;
+            border-bottom: 1px solid #222;
             padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            border-radius: 4px;
+            margin-bottom: 12px;
             position: relative;
         }
         .dropdown-container {
@@ -58,7 +62,8 @@ $total_reviews = count($display_reviews);
         .dropdown-menu {
             display: none;
             position: absolute;
-            background: none;
+            background: #111;
+            border: 1px solid #333;
             color: rgb(255, 255, 255);
             padding: 10px;
             border-radius: 5px;
@@ -101,23 +106,35 @@ $total_reviews = count($display_reviews);
             <div class="profile-header">
                 <img src="<?= htmlspecialchars($profileImage) ?>" alt="Profile Picture" class="profile-pic">
                 <div class="profile-details">
-                    <h2 class="username"><?= htmlspecialchars($username) ?></h2>
+                    <span style="font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: #2b6c40; font-weight: bold;">Profil Anggota</span>
+                    <h2 class="username" style="margin-top: 2px;"><?= htmlspecialchars($username) ?></h2>
                     <p class="email"><?= htmlspecialchars($email) ?></p>
                 </div>
             </div>
 
+            <div style="display: flex; gap: 15px; margin: 20px 0;">
+                <div style="background: #1e1e1e; border: 1px solid #333; padding: 12px 20px; border-radius: 6px; flex: 1;">
+                    <span style="font-size: 11px; color: #777; display: block; text-transform: uppercase;">Total Ulasan</span>
+                    <strong style="font-size: 20px; color: #fff;"><?= $total_reviews ?> Film</strong>
+                </div>
+                <div style="background: #1e1e1e; border: 1px solid #333; padding: 12px 20px; border-radius: 6px; flex: 1;">
+                    <span style="font-size: 11px; color: #777; display: block; text-transform: uppercase;">Status Akun</span>
+                    <strong style="font-size: 20px; color: #4ade80;"><i class="fas fa-check-circle"></i> Aktif</strong>
+                </div>
+            </div>
+
             <div class="recent-comments">
-                <h5>My Recent Comments (<?= $total_reviews ?>)</h5>
+                <h5 style="border-bottom: 2px solid #2b6c40; padding-bottom: 8px; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Aktivitas Komentar Terkini</h5>
                 <?php if ($total_reviews > 0): ?>
                     <?php foreach ($display_reviews as $review): ?>
                         <div class="review-item">
-                            <h4 style="margin-bottom: 8px; text-decoration: underline;">
+                            <h4 style="margin-bottom: 8px; text-decoration: none; color: #4ade80;">
                                 <?= htmlspecialchars($review['Title']) ?>
                             </h4>
-                            <span class="review-author"><?= htmlspecialchars($review['Username']) ?></span>
-                            <span class="review-rating"><?= str_repeat('★', (int) $review['Rating']) ?></span>
-                            <p class="review-comment"><?= nl2br(htmlspecialchars($review['Comment'])) ?></p>
-                            <p class="review-date"><?= date('F j, Y', strtotime($review['Created_at'])) ?></p>
+                            <span class="review-author" style="color: #bbb;"><?= htmlspecialchars($review['Username']) ?></span>
+                            <span class="review-rating" style="color: #fbbf24;"><?= str_repeat('★', (int) $review['Rating']) ?></span>
+                            <p class="review-comment" style="color: #e5e7eb; margin: 8px 0;"><?= nl2br(htmlspecialchars($review['Comment'])) ?></p>
+                            <p class="review-date" style="font-size: 11px; color: #666;"><?= date('F j, Y', strtotime($review['Created_at'])) ?></p>
 
                             <div class="dropdown-container">
                                 <button class="dropdown-btn" onclick="toggleDropdown(this)">
@@ -141,8 +158,9 @@ $total_reviews = count($display_reviews);
     </div>
 </main>
 
-<footer class="main-footer">
-    <p>&copy; <?= date('Y') ?> MOVLIX. All rights reserved.</p>
+<footer class="main-footer" style="text-align: center; padding: 20px 10px; border-top: 1px solid #222; margin-top: 40px; font-size: 12px; color: #666;">
+    <p style="margin: 0;">&copy; <?= date('Y') ?> MOVLIX. All rights reserved.</p>
+    <p style="color: #2b6c40; font-weight: bold; margin: 4px 0 0 0; letter-spacing: 0.5px;">Platform IT Keamanan Kelompok 6 | SI-UNJANI</p>
 </footer>
 
 <script>
