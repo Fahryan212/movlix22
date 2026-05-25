@@ -133,7 +133,7 @@ $genres = $pdo->query("SELECT * FROM genres")->fetchAll();
         </select>
 
         <select name="rating" class="filter-select">
-            <option value="">Rating</option>
+            <option value="">Filter Rating</option>
             <option value="5" <?= ($_GET['rating'] ?? '') == '5' ? 'selected' : '' ?>>★★★★★</option>
             <option value="4" <?= ($_GET['rating'] ?? '') == '4' ? 'selected' : '' ?>>★★★★+</option>
             <option value="3" <?= ($_GET['rating'] ?? '') == '3' ? 'selected' : '' ?>>★★★+</option>
@@ -278,7 +278,7 @@ $genres = $pdo->query("SELECT * FROM genres")->fetchAll();
 
 
 <footer class="main-footer">
-    <p>&copy; <?= date('Y') ?> MOVLIX. All rights reserved.</p>
+    <p>&copy; <?= date('Y') ?> Movlix. All rights reserved.</p>
 </footer>
 
 <script>
