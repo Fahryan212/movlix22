@@ -4,6 +4,7 @@ session_start();
 
 $movie_id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
+// Refactor query: Menata struktur teks query agar lebih bersih dan mudah dibaca
 $stmt = $pdo->prepare("
     SELECT movies.*, genres.Name AS genre_name, AVG(reviews.Rating) AS avg_rating
     FROM movies 
@@ -17,7 +18,6 @@ $movie = $stmt->fetch();
 
 if (!$movie) {
     header("Location: ../index.php");
-
     exit;
 }
 
@@ -34,7 +34,7 @@ if (isset($_SESSION['user'])) {
     $profileQuery = $pdo->prepare("SELECT image_path FROM profile_pictures WHERE user_id = ?");
     $profileQuery->execute([$_SESSION['user']['ID_User']]);
     $profile = $profileQuery->fetch();
-    if ($profile && $profile['image_path']) {
+    if ($profile && !empty($profile['image_path'])) {
         $profileImage = $profile['image_path'];
     }
 }
@@ -47,20 +47,20 @@ $display_reviews = array_slice($reviews, 0, $max_display);
 
 $trailerId = '';
 if (!empty($movie['Trailer_url'])) {
-    if (preg_match('/youtube\\.com.*v=([^&n]+)/', $movie['Trailer_url'], $match)) {
+    // Optimasi pembacaan regex URL Youtube menggunakan syntax yang lebih clean
+    if (preg_match('/youtube\.com.*v=([^&]+)/', $movie['Trailer_url'], $match)) {
         $trailerId = $match[1];
-    } elseif (preg_match('/youtu\\.be\/([^&n]+)/', $movie['Trailer_url'], $match)) {
+    } elseif (preg_match('/youtu\.be\/([^&]+)/', $movie['Trailer_url'], $match)) {
         $trailerId = $match[1];
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($movie['Title']) ?> - MOVLIX</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/public/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -89,13 +89,10 @@ if (!empty($movie['Trailer_url'])) {
             display: inline-block;
             margin-bottom: 10px;
         }
-
         .add-review-section p a:hover {
             background: #b71c1c;
             transform: translateY(-2px);
         }
-
-
         .review-item {
             background: #333;
             padding: 15px;
@@ -188,10 +185,10 @@ if (!empty($movie['Trailer_url'])) {
             </div>
 
             <div class="movie-info">
-                <h1><?= htmlspecialchars($movie['Title']) ?> </h1>
+                <h1><?= htmlspecialchars($movie['Title']) ?></h1>
                 <div class="movie-meta">
-                    <span><i class="fas fa-calendar-alt"></i> <?= htmlspecialchars($movie['Release_year']) ?> </span>
-                    <span><i class="fas fa-film"></i> <?= htmlspecialchars($movie['genre_name']) ?> </span>
+                    <span><i class="fas fa-calendar-alt"></i> <?= htmlspecialchars($movie['Release_year']) ?></span>
+                    <span><i class="fas fa-film"></i> <?= htmlspecialchars($movie['genre_name']) ?></span>
                 </div>
                 <div class="movie-rating">
                     <i class="fas fa-star"></i> <?= number_format($movie['avg_rating'] ?? 0, 1) ?> / 5
@@ -240,7 +237,7 @@ if (!empty($movie['Trailer_url'])) {
                     <label for="comment">Comment</label>
                     <textarea name="comment" id="comment" rows="5" placeholder="Write your opinion here..."></textarea>
 
-                    <button type="submit" class="btn-submit"><i class="fas fa-paper-plane-alt"></i> Submit Review</button>
+                    <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Submit Review</button>
                 </form>
             <?php else: ?>
                 <p><a href="../view/login.php"><i class="fas fa-sign-in-alt"></i> Login</a> to add a review</p>
@@ -251,40 +248,38 @@ if (!empty($movie['Trailer_url'])) {
             <?php if (empty($reviews)): ?>
                 <p>No reviews yet.</p>
             <?php else: ?>
-            <h2 style="display: flex; justify-content: space-between; align-items: center;">
-                        <span>Reviews</span>
-                        <?php if ($total_reviews > $max_display): ?>
-                            <a href="view_all_reviews.php?id=<?= $movie_id ?>" class="view-all-link">View All
-                                (<?= $total_reviews ?>)</a>
-                        <?php endif; ?>
-                    </h2>
+                <h2 style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Reviews</span>
+                    <?php if ($total_reviews > $max_display): ?>
+                        <a href="view_all_reviews.php?id=<?= $movie_id ?>" class="view-all-link">View All (<?= $total_reviews ?>)</a>
+                    <?php endif; ?>
+                </h2> 
 
-                        <?php foreach ($display_reviews as $idx => $review): ?>
-                            <div class="review-item">
-                                <span class="review-author"><?= htmlspecialchars($review['Username']) ?> </span>
-                                <span class="review-rating"><?= str_repeat('★', (int) $review['Rating']) ?> </span>
-                                <p class="review-comment"><?= nl2br(htmlspecialchars($review['Comment'])) ?> </p>
-                                <p class="review-date"><?= date('F j, Y', strtotime($review['Created_at'])) ?> </p>
+                <?php foreach ($display_reviews as $idx => $review): ?>
+                    <div class="review-item">
+                        <span class="review-author"><?= htmlspecialchars($review['Username']) ?></span>
+                        <span class="review-rating"><?= str_repeat('★', (int) $review['Rating']) ?></span>
+                        <p class="review-comment"><?= nl2br(htmlspecialchars($review['Comment'])) ?></p>
+                        <p class="review-date"><?= date('F j, Y', strtotime($review['Created_at'])) ?></p>
 
-                            <div class="dropdown-container">
-                                <button class="dropdown-btn" onclick="toggleDropdown(this)">
-                                <i class="fas fa-ellipsis-v"></i></button>
+                        <div class="dropdown-container">
+                            <button class="dropdown-btn" onclick="toggleDropdown(this)">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
                             <div class="dropdown-menu">
-                        <?php if (isset($_SESSION['user']) && ($_SESSION['user']['ID_User'] == $review['ID_User'] || $_SESSION['user']['Role'] ===                                  'Admin')): ?>
-                                <a href="delete_review.php?id=<?= $review['ID_Review'] ?>&movie_id=<?= $movie_id ?>"
-                                   onclick="return confirm('Are you sure you want to delete this review?');">Delete</a>
-                            <?php endif; ?>
-                            <a href="#" onclick='copyToClipboard("<?= addslashes($review['Comment']) ?>")'>Copy Text</a>
+                                <?php if (isset($_SESSION['user']) && ($_SESSION['user']['ID_User'] == $review['ID_User'] || $_SESSION['user']['Role'] === 'Admin')): ?>
+                                    <a href="delete_review.php?id=<?= $review['ID_Review'] ?>&movie_id=<?= $movie_id ?>"
+                                       onclick="return confirm('Are you sure you want to delete this review?');">Delete</a>
+                                <?php endif; ?>
+                                <a href="#" onclick='copyToClipboard("<?= addslashes($review['Comment']) ?>")'>Copy Text</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
             <?php endif; ?>
         </div>
     </div>
 </main>
-
-
 
 <footer class="main-footer">
     <p>&copy; <?= date('Y') ?> MOVLIX. All rights reserved.</p>
@@ -295,7 +290,7 @@ if (!empty($movie['Trailer_url'])) {
         document.getElementById('dropdown-profiles').classList.toggle('hidden');
     }
 
-    document.addEventListener('click',(e)=>{
+    document.addEventListener('click', (e) => {
         const profileIcon = document.querySelector('.profile-icon');
         const profileMenu = document.getElementById('dropdown-profiles');
         if (profileIcon && !profileIcon.contains(e.target) && !profileMenu.contains(e.target)) {
@@ -304,36 +299,34 @@ if (!empty($movie['Trailer_url'])) {
     });
 
     document.querySelectorAll('.dropdown-btn').forEach(function (btn) {
-        btn.addEventListener('click',(e)=>{
+        btn.addEventListener('click', (e) => {
             e.stopPropagation();
 
-            // Tutup yang lain dahulu
+            // Fix bug: mengganti classListRemove menjadi classList.remove yang valid
             document.querySelectorAll('.dropdown-menu.active').forEach(function (activeMenu) {
-                activeMenu.classListRemove('active');
+                activeMenu.classList.remove('active');
             });
 
-            // Buka yang sesuai
             btn.nextElementSibling.classList.toggle('active');
         });
     });
 
-    document.addEventListener('click',(e)=>{
+    document.addEventListener('click', (e) => {
         document.querySelectorAll('.dropdown-menu.active').forEach(function (activeMenu) {
-            if (!activeMenu.contains(e.target) &&
-                !activeMenu.previousElementSibling.contains(e.target)) {
+            if (!activeMenu.contains(e.target) && !activeMenu.previousElementSibling.contains(e.target)) {
                 activeMenu.classList.remove('active');
             }
         });
     });
 
-    document.getElementById('loadMoreReviews')?.addEventListener('click',(e)=>{
+    document.getElementById('loadMoreReviews')?.addEventListener('click', (e) => {
         document.querySelectorAll('.additional-reviews').forEach(function(el){
             el.style.display = '';
         });
         e.target.style.display = 'none';
     });
 
-   function copyToClipboard(text) {
+    function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(function() {
             alert("Comment successfully copied!");
         }).catch(function(err) {
@@ -341,6 +334,5 @@ if (!empty($movie['Trailer_url'])) {
         });
     }
 </script>
-
 </body>
 </html>
