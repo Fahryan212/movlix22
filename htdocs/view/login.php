@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - MovLix</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
 </head>
 <body class="login-body">
@@ -45,12 +46,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <form method="post">
             <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
+            
+            <div style="position: relative; width: 100%; margin-bottom: 15px;">
+                <input type="password" id="passwordInput" name="password" placeholder="Password" style="width: 100%; padding-right: 45px; margin-bottom: 0;" required>
+                <i class="fas fa-eye" id="togglePassword" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #aaaaaa; font-size: 14px; z-index: 10;"></i>
+            </div>
 
             <p>Don't have an account? <a href="register.php">Sign up here</a></p>
 
             <button type="submit">Log In</button>
         </form>
     </div>
+
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordField = document.querySelector('#passwordInput');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
 </body>
 </html>
