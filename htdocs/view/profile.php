@@ -40,7 +40,6 @@ $total_reviews = count($display_reviews);
     <link rel="stylesheet" href="../public/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* [UI TAHAP 2] Mengubah warna background dan menambahkan aksen border kiri pada item ulasan */
         .review-item {
             background: rgba(43, 108, 64, 0.1);
             border-left: 4px solid #2b6c40;
@@ -159,8 +158,9 @@ $total_reviews = count($display_reviews);
     </div>
 </main>
 
-<footer class="main-footer">
-    <p>&copy; <?= date('Y') ?> MOVLIX. All rights reserved.</p>
+<footer class="main-footer" style="text-align: center; padding: 20px 10px; border-top: 1px solid #222; margin-top: 40px; font-size: 12px; color: #666;">
+    <p style="margin: 0;">&copy; <?= date('Y') ?> MOVLIX. All rights reserved.</p>
+    <p style="color: #2b6c40; font-weight: bold; margin: 4px 0 0 0; letter-spacing: 0.5px;">Platform IT Keamanan Kelompok 6 | SI-UNJANI</p>
 </footer>
 
 <script>
