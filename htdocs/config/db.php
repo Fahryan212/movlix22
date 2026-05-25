@@ -1,7 +1,7 @@
 <?php
-$host = 'sql100.infinityfree.com';
-$dbname = 'if0_39201017_movlix';
-$username = 'if0_39201017'; // ganti jika username berbeda
+$host = 'localhost';
+$dbname = 'movlix_db';
+$username = 'root'; // ganti jika username berbeda
 $password = 'Movlix22';     // ganti jika ada password
 
 try {
