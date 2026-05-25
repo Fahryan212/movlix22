@@ -56,6 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <button type="submit">Log In</button>
         </form>
+        
+        <div style="margin-top: 25px; font-size: 11px; color: #777777; text-align: center; border-top: 1px solid #2a2a2a; padding-top: 15px; line-height: 1.3;">
+            <p style="margin: 0; letter-spacing: 0.5px;">MovLix IT Platform &copy; 2026</p>
+            <p style="color: #2b6c40; font-weight: bold; margin: 3px 0 0 0;">SI-UNJANI | Kelompok 6</p>
+        </div>
     </div>
 
     <script>
