@@ -40,11 +40,16 @@ $total_reviews = count($display_reviews);
     <link rel="stylesheet" href="../public/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* [UI TAHAP 2] Mengubah warna background dan menambahkan aksen border kiri pada item ulasan */
         .review-item {
-            background: #333;
+            background: rgba(43, 108, 64, 0.1);
+            border-left: 4px solid #2b6c40;
+            border-top: 1px solid #222;
+            border-right: 1px solid #222;
+            border-bottom: 1px solid #222;
             padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            border-radius: 4px;
+            margin-bottom: 12px;
             position: relative;
         }
         .dropdown-container {
@@ -58,7 +63,8 @@ $total_reviews = count($display_reviews);
         .dropdown-menu {
             display: none;
             position: absolute;
-            background: none;
+            background: #111;
+            border: 1px solid #333;
             color: rgb(255, 255, 255);
             padding: 10px;
             border-radius: 5px;
@@ -123,13 +129,13 @@ $total_reviews = count($display_reviews);
                 <?php if ($total_reviews > 0): ?>
                     <?php foreach ($display_reviews as $review): ?>
                         <div class="review-item">
-                            <h4 style="margin-bottom: 8px; text-decoration: underline;">
+                            <h4 style="margin-bottom: 8px; text-decoration: none; color: #4ade80;">
                                 <?= htmlspecialchars($review['Title']) ?>
                             </h4>
-                            <span class="review-author"><?= htmlspecialchars($review['Username']) ?></span>
-                            <span class="review-rating"><?= str_repeat('★', (int) $review['Rating']) ?></span>
-                            <p class="review-comment"><?= nl2br(htmlspecialchars($review['Comment'])) ?></p>
-                            <p class="review-date"><?= date('F j, Y', strtotime($review['Created_at'])) ?></p>
+                            <span class="review-author" style="color: #bbb;"><?= htmlspecialchars($review['Username']) ?></span>
+                            <span class="review-rating" style="color: #fbbf24;"><?= str_repeat('★', (int) $review['Rating']) ?></span>
+                            <p class="review-comment" style="color: #e5e7eb; margin: 8px 0;"><?= nl2br(htmlspecialchars($review['Comment'])) ?></p>
+                            <p class="review-date" style="font-size: 11px; color: #666;"><?= date('F j, Y', strtotime($review['Created_at'])) ?></p>
 
                             <div class="dropdown-container">
                                 <button class="dropdown-btn" onclick="toggleDropdown(this)">
