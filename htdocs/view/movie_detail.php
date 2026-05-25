@@ -4,7 +4,6 @@ session_start();
 
 $movie_id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
-// Refactor query: Menata struktur teks query agar lebih bersih dan mudah dibaca
 $stmt = $pdo->prepare("
     SELECT movies.*, genres.Name AS genre_name, AVG(reviews.Rating) AS avg_rating
     FROM movies 
@@ -47,7 +46,6 @@ $display_reviews = array_slice($reviews, 0, $max_display);
 
 $trailerId = '';
 if (!empty($movie['Trailer_url'])) {
-    // Optimasi pembacaan regex URL Youtube menggunakan syntax yang lebih clean
     if (preg_match('/youtube\.com.*v=([^&]+)/', $movie['Trailer_url'], $match)) {
         $trailerId = $match[1];
     } elseif (preg_match('/youtu\.be\/([^&]+)/', $movie['Trailer_url'], $match)) {
@@ -152,6 +150,26 @@ if (!empty($movie['Trailer_url'])) {
             margin-bottom: 20px;
             cursor: pointer;
         }
+        /* Style Tambahan untuk Komponen Baru */
+        .movie-badge-info {
+            display: inline-block;
+            background: rgba(243, 45, 46, 0.2);
+            color: #f32d2e;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 8px;
+            border: 1px solid rgba(243, 45, 46, 0.4);
+        }
+        .system-status {
+            font-size: 11px;
+            color: #777;
+            margin-top: 5px;
+        }
+        .system-status i {
+            color: #2ecc71;
+        }
     </style>
 </head>
 <body class="home-body">
@@ -186,12 +204,18 @@ if (!empty($movie['Trailer_url'])) {
 
             <div class="movie-info">
                 <h1><?= htmlspecialchars($movie['Title']) ?></h1>
-                <div class="movie-meta">
+                
+                <div>
+                    <span class="movie-badge-info"><i class="fas fa-check-circle"></i> Verified Content</span>
+                    <span class="movie-badge-info" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid #444;"><i class="fas fa-eye"></i> Full HD</span>
+                </div>
+
+                <div class="movie-meta" style="margin-top: 15px;">
                     <span><i class="fas fa-calendar-alt"></i> <?= htmlspecialchars($movie['Release_year']) ?></span>
                     <span><i class="fas fa-film"></i> <?= htmlspecialchars($movie['genre_name']) ?></span>
                 </div>
                 <div class="movie-rating">
-                    <i class="fas fa-star"></i> <?= number_format($movie['avg_rating'] ?? 0, 1) ?> / 5
+                    <i class="fas fa-star" style="color: #ffd700;"></i> <?= number_format($movie['avg_rating'] ?? 0, 1) ?> / 5
                 </div>
                 <div class="movie-description">
                     <?= nl2br(htmlspecialchars($movie['Description'])) ?>
@@ -257,10 +281,10 @@ if (!empty($movie['Trailer_url'])) {
 
                 <?php foreach ($display_reviews as $idx => $review): ?>
                     <div class="review-item">
-                        <span class="review-author"><?= htmlspecialchars($review['Username']) ?></span>
+                        <span class="review-author"><i class="fas fa-user-circle"></i> <?= htmlspecialchars($review['Username']) ?></span>
                         <span class="review-rating"><?= str_repeat('★', (int) $review['Rating']) ?></span>
                         <p class="review-comment"><?= nl2br(htmlspecialchars($review['Comment'])) ?></p>
-                        <p class="review-date"><?= date('F j, Y', strtotime($review['Created_at'])) ?></p>
+                        <p class="review-date"><i class="far fa-clock"></i> <?= date('F j, Y', strtotime($review['Created_at'])) ?></p>
 
                         <div class="dropdown-container">
                             <button class="dropdown-btn" onclick="toggleDropdown(this)">
@@ -283,6 +307,9 @@ if (!empty($movie['Trailer_url'])) {
 
 <footer class="main-footer">
     <p>&copy; <?= date('Y') ?> MOVLIX. All rights reserved.</p>
+    <p class="system-status">
+        <i class="fas fa-sync-alt fa-spin"></i> Environment: <span style="color:#2ecc71;">Production (Biznet GIO)</span> | Pipeline: <span style="color:#2ecc71;">Active via GitHub Actions</span>
+    </p>
 </footer>
 
 <script>
@@ -302,7 +329,6 @@ if (!empty($movie['Trailer_url'])) {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
 
-            // Fix bug: mengganti classListRemove menjadi classList.remove yang valid
             document.querySelectorAll('.dropdown-menu.active').forEach(function (activeMenu) {
                 activeMenu.classList.remove('active');
             });
