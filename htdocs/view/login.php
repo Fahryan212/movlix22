@@ -32,6 +32,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="login-box">
         <h2>Log In</h2>
 
+        <div style="background: rgba(43, 108, 64, 0.2); border-left: 4px solid #2b6c40; padding: 10px 12px; margin-bottom: 20px; border-radius: 4px; text-align: left; font-size: 12px; color: #ffffff; line-height: 1.4;">
+            <strong style="color: #4ade80;">Mode Testing Tahap 2:</strong><br>
+            Gunakan akun <em>Admin</em> untuk hak akses penuh ke Dashboard & Fitur CRUD.
+        </div>
+
         <?php if (!empty($error)): ?>
             <p class="error"><?= htmlspecialchars($error) ?></p>
         <?php endif; ?>
