@@ -101,13 +101,25 @@ $total_reviews = count($display_reviews);
             <div class="profile-header">
                 <img src="<?= htmlspecialchars($profileImage) ?>" alt="Profile Picture" class="profile-pic">
                 <div class="profile-details">
-                    <h2 class="username"><?= htmlspecialchars($username) ?></h2>
+                    <span style="font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: #2b6c40; font-weight: bold;">Profil Anggota</span>
+                    <h2 class="username" style="margin-top: 2px;"><?= htmlspecialchars($username) ?></h2>
                     <p class="email"><?= htmlspecialchars($email) ?></p>
                 </div>
             </div>
 
+            <div style="display: flex; gap: 15px; margin: 20px 0;">
+                <div style="background: #1e1e1e; border: 1px solid #333; padding: 12px 20px; border-radius: 6px; flex: 1;">
+                    <span style="font-size: 11px; color: #777; display: block; text-transform: uppercase;">Total Ulasan</span>
+                    <strong style="font-size: 20px; color: #fff;"><?= $total_reviews ?> Film</strong>
+                </div>
+                <div style="background: #1e1e1e; border: 1px solid #333; padding: 12px 20px; border-radius: 6px; flex: 1;">
+                    <span style="font-size: 11px; color: #777; display: block; text-transform: uppercase;">Status Akun</span>
+                    <strong style="font-size: 20px; color: #4ade80;"><i class="fas fa-check-circle"></i> Aktif</strong>
+                </div>
+            </div>
+
             <div class="recent-comments">
-                <h5>My Recent Comments (<?= $total_reviews ?>)</h5>
+                <h5 style="border-bottom: 2px solid #2b6c40; padding-bottom: 8px; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Aktivitas Komentar Terkini</h5>
                 <?php if ($total_reviews > 0): ?>
                     <?php foreach ($display_reviews as $review): ?>
                         <div class="review-item">
